@@ -10,6 +10,13 @@ pipeline {
                 echo 'Hello, Jenkins! This is my first job.'
             }
         }
+
+        stage('Check Docker') {
+    steps {
+        sh 'docker version'
+    }
+}
+
         stage('Build Docker Image') {
             steps {
                 script {
