@@ -3,6 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'alpine'
         IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKER_HUB_REPO = 'krishnna/jenkins_repo'
     }
     stages {
         stage('Hello') {
@@ -21,6 +22,17 @@ pipeline {
             steps {
                 script {
                     docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${DOCKER_HUB_REPO}:${IMAGE_TAG}
+                        docker logout
+                    '''
                 }
             }
         }
