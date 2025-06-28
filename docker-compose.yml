@@ -11,7 +11,8 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - C:\Users\Monisha Loganathan\.kube\config:/root/.kube/config
+      - /c/Users/Monisha Loganathan/.kube/config:/root/.kube/config
+
 
     restart: unless-stopped
 
