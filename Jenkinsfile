@@ -6,9 +6,9 @@ pipeline {
         DOCKER_HUB_REPO = 'krishnna/jenkins_repo'
     }
     stages {
-        stage('Hello') {
+        stage('Checkout') {
             steps {
-                echo 'Hello, Jenkins! This is my first job.'
+                checkout scm
             }
         }
 
