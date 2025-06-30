@@ -47,7 +47,7 @@ pipeline {
 
      stage('Deploy to kubernetes') {
     steps {
-        withKubeConfig([credentialsId: 'minikube_creds']) {
+        withCredentials([file(credentialsId: 'minikube_creds', variable: 'kubeconfig')]) {
               sh '''
                 envsubst < deployment.yaml > deployment-rendered.yaml 
                 kubectl apply -f deployment-rendered.yaml --validate=false
