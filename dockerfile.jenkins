@@ -6,9 +6,15 @@ RUN apt-get update && apt-get install -y \
     curl ca-certificates gnupg lsb-release \
  && curl -fsSL https://get.docker.com | sh \
  && usermod -aG docker jenkins
-# Install kubectl
-RUN curl -LO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl \
+
+RUN curl -fsSLO https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl \
   && chmod +x kubectl \
   && mv kubectl /usr/local/bin/kubectl
+
+RUN kubectl version --client
+
+RUN apt-get update && apt-get install -y \
+    curl ca-certificates gnupg lsb-release \
+ && rm -rf /var/lib/apt/lists/*
 
 USER jenkins
