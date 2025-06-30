@@ -49,7 +49,7 @@ pipeline {
     steps {
         withKubeConfig([credentialsId: 'minikube_creds']) {
               sh '''
-                envsubst < deployment.yaml > deployment-rendered.yaml
+                envsubst < deployment.yaml > deployment-rendered.yaml --validate=false
                 kubectl apply -f deployment-rendered.yaml
                 kubectl apply -f service.yaml
               '''
