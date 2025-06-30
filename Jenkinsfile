@@ -35,6 +35,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Install Tools') {
+    steps {
+        sh '''
+            apt-get update
+            apt-get install -y gettext-base
+        '''
+    }
+}
+
      stage('Deploy to kubernetes') {
     steps {
         withKubeConfig([credentialsId: 'minikube_creds']) {
