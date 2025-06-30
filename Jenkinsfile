@@ -35,13 +35,14 @@ pipeline {
                 }
             }
         }
-     stage('Deploy to Minikube') {
+     stage('Deploy to kubernetes') {
     steps {
         withKubeConfig([credentialsId: 'minikube_creds']) {
-            sh '''
-                kubectl apply -f deployment.yaml
+              sh '''
+                envsubst < deployment.yaml > deployment-rendered.yaml
+                kubectl apply -f deployment-rendered.yaml
                 kubectl apply -f service.yaml
-            '''
+              '''
         }
     }
 }
