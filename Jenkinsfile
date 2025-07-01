@@ -46,16 +46,21 @@ pipeline {
 }
 
      stage('Deploy to kubernetes') {
-    steps {
-        withCredentials([file(credentialsId: 'kubernetes_creds', variable: 'config')]) {
-              sh '''
-                envsubst < deployment.yaml > deployment-rendered.yaml 
-                kubectl apply -f deployment-rendered.yaml --validate=false
-                kubectl apply -f service.yaml
-              '''
-        }
+  steps {
+    withCredentials([file(credentialsId: 'kubernetes_creds', variable: 'config')]) {
+      sh '''
+        mkdir -p ~/.kube
+        rm -rf ~/.kube/config
+        cp "$config" ~/.kube/config
+
+        envsubst < deployment.yaml > deployment-rendered.yaml 
+        kubectl apply -f deployment-rendered.yaml --validate=false
+        kubectl apply -f service.yaml
+      '''
     }
+  }
 }
+
 
 
     }
